@@ -1,0 +1,36 @@
+{
+  "name": "thesocialapp",
+  "version": "1.0.0",
+  "description": "THESocialApp helps you connect and share with the people in your life",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/pranvinit/THESocialApp.git"
+  },
+  "keywords": [
+    "socketio",
+    "mern",
+    "stack",
+    "react",
+    "realtime",
+    "social",
+    "media",
+    "app"
+  ],
+  "author": "pranav",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pranvinit/THESocialApp/issues"
+  },
+  "homepage": "https://github.com/pranvinit/THESocialApp#readme",
+  "dependencies": {
+    "express": "^4.17.3",
+    "mongoose": "^6.2.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
