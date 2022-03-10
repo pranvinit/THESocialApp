@@ -27,8 +27,17 @@
   },
   "homepage": "https://github.com/pranvinit/THESocialApp#readme",
   "dependencies": {
+    "dotenv": "^16.0.0",
     "express": "^4.17.3",
-    "mongoose": "^6.2.5"
+    "express-async-errors": "^3.1.1",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^6.3.0",
+    "helmet": "^5.0.2",
+    "http-status-codes": "^2.2.0",
+    "mongoose": "^6.2.5",
+    "morgan": "^1.10.0",
+    "validator": "^13.7.0",
+    "xss-clean": "^0.1.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
