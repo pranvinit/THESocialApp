@@ -74,6 +74,13 @@ const UserSchema = mongoose.Schema(
     verified: {
       type: Date,
     },
+    // forgot/reset password properties
+    passwordToken: {
+      type: String,
+    },
+    passwordExpirationDate: {
+      type: Date,
+    },
   },
   { timestamps: true }
 );

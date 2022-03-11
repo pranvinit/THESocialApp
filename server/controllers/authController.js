@@ -3,7 +3,12 @@ const crypto = require("crypto");
 const { StatusCodes } = require("http-status-codes");
 
 // utils imports
-const { createTokenUser, attackCookieToResponse } = require("../utils");
+const {
+  createTokenUser,
+  attackCookieToResponse,
+  sendVerificationEmail,
+  sendResetPasswordEmail,
+} = require("../utils");
 
 const register = async (req, res) => {
   const data = req.body;
@@ -11,6 +16,13 @@ const register = async (req, res) => {
     // creates a dynamic hex token
     data.verificationToken = crypto.randomBytes(40).toString("hex");
     const user = await User.create(data);
+
+    await sendVerificationEmail({
+      name: user.username,
+      email: user.email,
+      verificationToken: user.verificationToken,
+      origin: process.env.ORIGIN,
+    });
     const tokenUser = createTokenUser(user);
     attackCookieToResponse({ user: tokenUser, res });
 
@@ -78,9 +90,67 @@ const verifyEmail = async (req, res) => {
   }
 };
 
+const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+  if (!email) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ msg: "please provide an email address" });
+  }
+  const user = await User.findOne({ email });
+  // do not let the client know if the email is valid
+  if (user) {
+    const passwordToken = crypto.randomBytes(40).toString("hex");
+    const fifteenMinutes = 1000 * 60 * 15;
+    const passwordExpirationDate = new Date(Date.now() + fifteenMinutes);
+    await user.updateOne({ passwordToken, passwordExpirationDate });
+    await sendResetPasswordEmail({
+      to: user.email,
+      email: user.email,
+      token: passwordToken,
+      origin: process.env.ORIGIN,
+    });
+  }
+  res.status(StatusCodes.OK).json({ msg: "check email to reset the password" });
+};
+
+const resetPassword = async (req, res) => {
+  const { passwordToken, email, password } = req.body;
+  if (!passwordToken || !email || !password) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ msg: "please provide all the values" });
+  }
+  try {
+    const user = await User.findOne({ email });
+    if (user) {
+      if (user) {
+        const currentDate = new Date();
+        if (
+          user.passwordToken === passwordToken &&
+          user.passwordExpirationDate > currentDate
+        ) {
+          await user.updateOne({
+            password,
+            passwordToken: "",
+            passwordExpirationDate: null,
+          });
+        }
+      }
+    }
+    res
+      .status(StatusCodes.OK)
+      .json({ msg: "password was changed successfully" });
+  } catch (err) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(err);
+  }
+};
+
 module.exports = {
   register,
   login,
   logout,
   verifyEmail,
+  forgotPassword,
+  resetPassword,
 };
