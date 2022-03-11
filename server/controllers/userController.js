@@ -32,7 +32,7 @@ const updateUser = async (req, res) => {
   const data = req.body;
   const { password, ...safeData } = data;
   try {
-    const user = await User.findByIdAndUpdate({ _id: userId }, safeData, {
+    const user = await User.findOneAndUpdate({ _id: userId }, safeData, {
       runValidators: true,
       new: true,
     });
@@ -135,8 +135,8 @@ const unfollowUser = async (req, res) => {
         .status(StatusCodes.BAD_REQUEST)
         .json({ msg: "you do not follow this user" });
     }
-    await friend.updateOne({ $pop: { followers: user._id } });
-    await user.updateOne({ $pop: { followings: friend._id } });
+    await friend.updateOne({ $pull: { followers: user._id } });
+    await user.updateOne({ $pull: { followings: friend._id } });
     res.status(StatusCodes.OK).json({ msg: "user has been followed" });
   } catch (err) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(err);

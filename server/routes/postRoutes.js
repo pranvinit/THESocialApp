@@ -8,7 +8,6 @@ const {
   updatePost,
   deletePost,
   likePost,
-  dislikePost,
   timelinePosts,
 } = require("../controllers/postController");
 
@@ -23,7 +22,6 @@ router.route("/").post(authenticateUser, createPost);
 router.route("/timeline").get(authenticateUser, timelinePosts);
 router.route("/:id/like").put(authenticateUser, likePost);
 
-router.route("/:id/dislike").put(authenticateUser, dislikePost);
 router
   .route("/:id")
   .get(authenticateUser, getSinglePost)
