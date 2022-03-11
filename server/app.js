@@ -1,20 +1,21 @@
 require("dotenv").config();
-require("express-async-errors");
 
 const express = require("express");
 const app = express();
 
 // middleware imports
+const cookieParser = require("cookie-parser");
 const helmet = require("helmet");
 const xss = require("xss-clean");
 const mongoSanitize = require("express-mongo-sanitize");
 const rateLimiter = require("express-rate-limit");
 const morgan = require("morgan");
-const errorHandler = require("./middleware/error-handler");
 const notFound = require("./middleware/not-found");
 
 // router imorts
+const authRouter = require("./routes/authRoutes");
 const userRouter = require("./routes/userRoutes");
+const postRouter = require("./routes/postRoutes");
 // const postRouter = require('./routes/postRoutes')
 
 // db imports
@@ -34,6 +35,7 @@ app.use(
 app.use(express.json());
 
 // setting third-party middlewares
+app.use(cookieParser(process.env.SIGNED_COOKIE_SECRET));
 app.use(helmet());
 app.use(xss());
 app.use(mongoSanitize());
@@ -45,10 +47,11 @@ app.get("/", (req, res) => {
 });
 
 // setting routers
+app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/posts", postRouter);
 
 // setting error middlewares
-app.use(errorHandler);
 app.use(notFound);
 
 const PORT = process.env.PORT || 5000;

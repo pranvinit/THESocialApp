@@ -1,5 +1,26 @@
 const mongoose = require("mongoose");
 
-const ProductSchema = mongoose.Schema({});
+const PostSchema = mongoose.Schema(
+  {
+    user: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    description: {
+      type: String,
+      maxLength: [500, "post description cannot exceed 500 characters"],
+    },
+    image: {
+      type: String,
+      default: "",
+    },
+    likes: {
+      type: [mongoose.Types.ObjectId],
+      default: [],
+    },
+  },
+  { timestamps: true }
+);
 
-module.exports = mongoose.model("Product", ProductSchema);
+module.exports = mongoose.model("Post", PostSchema);
