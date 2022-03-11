@@ -63,6 +63,17 @@ const UserSchema = mongoose.Schema(
       type: String,
       enum: ["single", "married"],
     },
+    // email-verification properties
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: {
+      type: String,
+    },
+    verified: {
+      type: Date,
+    },
   },
   { timestamps: true }
 );

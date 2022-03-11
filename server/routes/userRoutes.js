@@ -22,7 +22,7 @@ router
   .route("/")
   .get([authenticateUser, authorizePermission("admin")], getAllUsers);
 
-router.route("/updatePassword").post(authenticateUser, updateUserPassword);
+router.route("/update-password").post(authenticateUser, updateUserPassword);
 
 router
   .route("/:id")
