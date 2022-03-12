@@ -40,3 +40,51 @@
   margin: 0;
   list-style: none;
 }
+
+.rightbarProfileTitle {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+.rightbarprofileFriendsTitle {
+  margin-top: 40px;
+}
+
+.rightbarInfo {
+  margin-bottom: 20px;
+}
+
+.rightbarInfoItem {
+  margin-bottom: 10px;
+}
+
+.rightbarInfoKey {
+  font-weight: 500;
+  color: #555;
+}
+
+.rightbarInfoValue {
+  font-weight: 300;
+}
+
+.rightbarFollowings {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.rightbarFollowing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.rightbarFollowingImg {
+  width: 120px;
+  height: 120px;
+  border-radius: 5px;
+  object-fit: cover;
+  cursor: pointer;
+}
