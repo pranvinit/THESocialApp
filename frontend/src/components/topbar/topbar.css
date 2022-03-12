@@ -55,6 +55,7 @@
 }
 
 .topbarLink {
+  font-weight: 500;
   margin-right: 15px;
   cursor: pointer;
 }
