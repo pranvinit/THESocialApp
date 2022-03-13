@@ -16,7 +16,6 @@ export default function Post({ post }) {
   const [postUser, setPostUser] = useState({});
 
   useEffect(() => {
-    if (!post.user) return;
     const getPostUser = async () => {
       try {
         const user = await axios.get(`/users/${post.user}`);
@@ -25,6 +24,7 @@ export default function Post({ post }) {
         console.log(err);
       }
     };
+    if (!post.user) return;
     getPostUser();
   }, [post.userId]);
 
@@ -49,7 +49,7 @@ export default function Post({ post }) {
             <img
               src={
                 postUser.profilePicture
-                  ? `/assets/${postUser.profilePicture}`
+                  ? postUser.profilePicture
                   : "/assets/person/noAvatar.png"
               }
               alt="profile"
@@ -65,7 +65,7 @@ export default function Post({ post }) {
         <div className="postCenter">
           <span className="postText">{post.description}</span>
           {post.image && (
-            <img src={`/assets/${post.photo}`} alt="post" className="postImg" />
+            <img src={post.image} alt="post" className="postImg" />
           )}
         </div>
         <div className="postBottom">

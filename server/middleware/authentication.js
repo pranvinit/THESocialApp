@@ -9,8 +9,17 @@ const authenticateUser = async (req, res, next) => {
       .json({ msg: "user is not authorized" });
   }
   try {
-    const { _id, username, role } = verifyJWT(token);
-    req.user = { _id, username, role };
+    const { _id, username, profilePicture, email, city, from, relationship } =
+      verifyJWT(token);
+    req.user = {
+      _id,
+      username,
+      profilePicture,
+      email,
+      city,
+      from,
+      relationship,
+    };
     next();
   } catch (err) {
     res

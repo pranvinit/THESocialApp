@@ -37,6 +37,26 @@
   margin-block: 10px;
 }
 
+.shareImgContainer {
+  padding: 0 20px 10px 20px;
+  max-height: 750px;
+  overflow: hidden;
+  position: relative;
+}
+
+.shareImg {
+  width: 100%;
+  object-fit: cover;
+}
+
+.shareCancelImg {
+  position: absolute;
+  top: 0;
+  right: 20px;
+  cursor: pointer;
+  opacity: 0.5;
+}
+
 .shareBottom {
   display: flex;
   align-items: center;
@@ -74,4 +94,7 @@
   margin-right: 20px;
   font-weight: 500;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

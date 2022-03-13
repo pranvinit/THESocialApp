@@ -1,4 +1,5 @@
 import "./profile.css";
+import { useContext } from "react";
 
 // components imports
 import Topbar from "../../components/topbar/Topbar";
@@ -6,8 +7,13 @@ import Leftbar from "../../components/leftbar/Leftbar";
 import Feed from "../../components/feed/Feed";
 import Rightbar from "../../components/rightbar/Rightbar";
 
+// auth context imports
+import { AuthContext } from "../../context/AuthContext";
+
 export default function Profile() {
   // created the new profileRightTop design for the profile page
+
+  const { user } = useContext(AuthContext);
   return (
     <>
       <Topbar />
@@ -17,12 +23,20 @@ export default function Profile() {
           <div className="profileRightTop">
             <div className="profileCover">
               <img
-                src="/assets/post/3.jpeg"
+                src={
+                  user.coverPicture
+                    ? user.coverPicture
+                    : "/assets/person/noCover.png"
+                }
                 alt="cover"
                 className="profileCoverImg"
               />
               <img
-                src="/assets/person/5.jpeg"
+                src={
+                  user.profilePicture
+                    ? user.profilePicture
+                    : "/assets/person/noAvatar.png"
+                }
                 alt="profile"
                 className="profileUserImg"
               />

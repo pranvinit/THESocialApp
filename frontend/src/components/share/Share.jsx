@@ -4,30 +4,50 @@ import { useEffect, useRef, useState, useContext } from "react";
 import axios from "axios";
 
 // mui-icons imports
-import { PermMedia, Label, Room, EmojiEmotions } from "@mui/icons-material";
+import {
+  PermMedia,
+  Label,
+  Room,
+  EmojiEmotions,
+  Cancel,
+} from "@mui/icons-material";
 
 // context imports
 import { AuthContext } from "../../context/AuthContext";
+import { CircularProgress } from "@mui/material";
 
 export default function Share() {
   const { user } = useContext(AuthContext);
   const shareTextArea = useRef(null);
   const [file, setFile] = useState(null);
 
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     autosize(shareTextArea.current);
   }, []);
 
   const handleSubmit = async () => {
-    const newPost = {
-      user: user._id,
-      description: shareTextArea.current.value,
-    };
-
+    setLoading(true);
     try {
-      await axios.post(`/posts`, newPost);
+      const body = {
+        user: user._id,
+        description: shareTextArea.current.value,
+      };
+      if (file) {
+        const data = new FormData();
+        data.append("image", file);
+        const imgUrl = await axios.post("/uploads", data);
+        body.image = imgUrl.data.image;
+      }
+      await axios.post("/posts", body);
+      setFile(null);
+      shareTextArea.current.value = "";
+      setLoading(false);
+      window.location.reload();
     } catch (err) {
       console.log(err);
+      setLoading(false);
     }
   };
 
@@ -54,6 +74,16 @@ export default function Share() {
           ></textarea>
         </div>
         <hr className="shareHr" />
+        {file && (
+          <div className="shareImgContainer">
+            <img
+              className="shareImg"
+              src={URL.createObjectURL(file)}
+              alt="share"
+            />
+            <Cancel className="shareCancelImg" onClick={() => setFile(null)} />
+          </div>
+        )}
         <div className="shareBottom">
           <div className="shareOptions">
             <label htmlFor="fileInput" className="shareOption">
@@ -81,7 +111,11 @@ export default function Share() {
             </div>
           </div>
           <button className="shareButton" onClick={handleSubmit}>
-            Share
+            {!loading ? (
+              "Share"
+            ) : (
+              <CircularProgress size={20} className="loadingIndicator" />
+            )}
           </button>
         </div>
       </div>

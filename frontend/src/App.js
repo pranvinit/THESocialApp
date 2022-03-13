@@ -27,12 +27,13 @@ function App() {
     getCurrentUser(dispatch);
   }, []);
 
+  console.log(user);
   return (
     <Router>
       <Routes>
         <Route path="/" element={user ? <Home /> : <Navigate to="/login" />} />
         <Route
-          path="/profile/:username"
+          path="/profile"
           element={user ? <Profile /> : <Navigate to="/login" />}
         />
         <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />

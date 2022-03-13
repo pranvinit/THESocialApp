@@ -9,8 +9,6 @@ import Post from "../post/Post";
 export default function Feed() {
   const [posts, setPosts] = useState([]);
 
-  console.log(posts);
-
   useEffect(() => {
     const getTimelinePosts = async () => {
       try {

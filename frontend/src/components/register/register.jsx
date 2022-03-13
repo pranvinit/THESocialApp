@@ -37,20 +37,24 @@ export default function Register() {
     }
     setLoading(true);
     try {
-      // handling profile image upload
-      const data = new FormData();
-      data.append("image", file);
-      const imgUrl = await axios.post("/uploads", data);
-
-      await registerRequest({
+      const body = {
         username: username.current.value,
         email: email.current.value,
         password: password.current.value,
-        profilePicture: imgUrl.data.image,
         from: from.current.value,
         city: city.current.value,
         relationship: relationship.current.value,
-      });
+      };
+
+      // handling profile image upload
+      if (file) {
+        const data = new FormData();
+        data.append("image", file);
+        const imgUrl = await axios.post("/uploads", data);
+        body.profilePicture = imgUrl.data.image;
+      }
+
+      await registerRequest(body);
       setLoading(false);
       navigate("/login");
     } catch (err) {
