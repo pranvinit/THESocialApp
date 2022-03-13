@@ -119,7 +119,7 @@ export default function Register() {
               placeholder="Relationship"
               ref={relationship}
             />
-            <datalist id="relationship">
+            <datalist id="relationship" ref={relationship}>
               <option value="1">Single</option>
               <option value="2">Married</option>
             </datalist>

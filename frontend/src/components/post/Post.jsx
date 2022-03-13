@@ -15,6 +15,8 @@ export default function Post({ post }) {
   const { user } = useContext(AuthContext);
   const [postUser, setPostUser] = useState({});
 
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+
   useEffect(() => {
     const getPostUser = async () => {
       try {
@@ -71,13 +73,13 @@ export default function Post({ post }) {
         <div className="postBottom">
           <div className="postBottomLeft">
             <img
-              src="assets/like.png"
+              src={PF + "/like.png"}
               alt="like"
               className="likeIcon"
               onClick={handleLike}
             />
             <img
-              src="assets/heart.png"
+              src={PF + "/heart.png"}
               alt="heart"
               className="likeIcon"
               onClick={handleLike}

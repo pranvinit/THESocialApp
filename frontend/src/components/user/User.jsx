@@ -1,9 +1,13 @@
-import "./closeFriend.css";
-export default function CloseFriend({ user }) {
+import "./user.css";
+export default function User({ user }) {
   return (
     <li className="sidebarFriend">
       <img
-        src={`/assets/${user.profilePicture}`}
+        src={
+          user.profilePicture
+            ? user.profilePicture
+            : "/assets/person/noAvatar.png"
+        }
         alt="friend"
         className="sidebarFriendImg"
       />

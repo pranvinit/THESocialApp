@@ -1,13 +1,16 @@
 import "./feed.css";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 
 // components imports
 import Share from "../share/Share";
 import Post from "../post/Post";
+import { AuthContext } from "../../context/AuthContext";
 
-export default function Feed() {
+export default function Feed({ userId }) {
   const [posts, setPosts] = useState([]);
+
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     const getTimelinePosts = async () => {
@@ -24,7 +27,7 @@ export default function Feed() {
   return (
     <div className="feed">
       <div className="feedWrapper">
-        <Share />
+        {(!userId || user._id === userId) && <Share />}
         {posts.map((p) => (
           <Post key={p._id} post={p} />
         ))}

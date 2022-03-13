@@ -1,4 +1,6 @@
 import "./leftbar.css";
+import { Link } from "react-router-dom";
+import { useContext } from "react";
 
 // mui-icons imports
 import {
@@ -14,12 +16,31 @@ import {
 } from "@mui/icons-material";
 
 // components imports
-import CloseFriend from "../closeFriend/CloseFriend";
+import User from "../user/User";
 
-// dummy data imports
-import { Users } from "../../dummyData";
+// auth context imports
+import { AuthContext } from "../../context/AuthContext";
+
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function Leftbar() {
+  const [users, setUsers] = useState([]);
+
+  const { user: currentUser } = useContext(AuthContext);
+
+  useEffect(() => {
+    const getUsers = async () => {
+      try {
+        const res = await axios.get("/users");
+        setUsers(res.data.users.filter((u) => u._id !== currentUser._id));
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getUsers();
+  }, []);
+
   return (
     <div className="leftbar">
       <div className="leftbarWrapper">
@@ -64,8 +85,10 @@ export default function Leftbar() {
         <button className="sidebarButton">Show More</button>
         <hr className="sidebarHr" />
         <ul className="sidebarFriendList">
-          {Users.map((u) => (
-            <CloseFriend key={u.id} user={u} />
+          {users.map((u) => (
+            <Link key={u._id} to={`/profile/${u._id}`} className="no-dec">
+              <User user={u} />
+            </Link>
           ))}
         </ul>
       </div>

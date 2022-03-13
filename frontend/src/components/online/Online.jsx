@@ -5,7 +5,11 @@ export default function Online({ user }) {
     <li className="rightbarFriend">
       <div className="profileImgContainer">
         <img
-          src={`/assets/${user.profilePicture}`}
+          src={
+            user.profilePicture
+              ? user.profilePicture
+              : "/assets/person/noAvatar.png"
+          }
           alt="profile"
           className="profileImg"
         />

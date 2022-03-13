@@ -148,6 +148,25 @@ const unfollowUser = async (req, res) => {
   }
 };
 
+// get user followings
+const getUserFollowings = async (req, res) => {
+  const user = req.user;
+  try {
+    const currentUser = await User.findOne({ _id: user._id });
+    console.log(currentUser.username);
+    const followings = await Promise.all(
+      currentUser.followings.map((f) => {
+        return User.findOne({ _id: f }).select("-password");
+      })
+    );
+    console.log(followings);
+
+    res.status(StatusCodes.OK).json({ followings, hbHits: followings.length });
+  } catch (err) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(err);
+  }
+};
+
 module.exports = {
   getSingleUser,
   getAllUsers,
@@ -157,4 +176,5 @@ module.exports = {
   followUser,
   unfollowUser,
   showCurrentUser,
+  getUserFollowings,
 };

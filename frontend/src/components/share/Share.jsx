@@ -28,6 +28,7 @@ export default function Share() {
   }, []);
 
   const handleSubmit = async () => {
+    if (!shareTextArea.current.value) return;
     setLoading(true);
     try {
       const body = {
@@ -54,7 +55,7 @@ export default function Share() {
   return (
     <div className="share">
       <div className="shareWrapper">
-        <div className="shareTop">
+        <form className="shareTop">
           <img
             src={
               user.profilePicture
@@ -69,10 +70,10 @@ export default function Share() {
             name="shareText"
             ref={shareTextArea}
             className="shareTextArea"
-            placeholder="What's in your mind Pranav?"
+            placeholder={`What's in your mind ${user.username}?`}
             rows={1}
           ></textarea>
-        </div>
+        </form>
         <hr className="shareHr" />
         {file && (
           <div className="shareImgContainer">

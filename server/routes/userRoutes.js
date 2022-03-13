@@ -11,19 +11,16 @@ const {
   deleteUser,
   followUser,
   unfollowUser,
+  getUserFollowings,
 } = require("../controllers/userController");
 
 // middleware imports
-const {
-  authenticateUser,
-  authorizePermission,
-} = require("../middleware/authentication");
+const { authenticateUser } = require("../middleware/authentication");
 
-router
-  .route("/")
-  .get([authenticateUser, authorizePermission("admin")], getAllUsers);
+router.route("/").get(authenticateUser, getAllUsers);
 
 router.route("/showUser").get(authenticateUser, showCurrentUser);
+router.route("/friends").get(authenticateUser, getUserFollowings);
 
 router.route("/update-password").post(authenticateUser, updateUserPassword);
 

@@ -40,6 +40,7 @@
 .shareImgContainer {
   padding: 0 20px 10px 20px;
   max-height: 750px;
+  margin-block: 20px;
   overflow: hidden;
   position: relative;
 }

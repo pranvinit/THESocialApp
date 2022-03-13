@@ -1,4 +1,5 @@
 require("dotenv").config();
+const path = require("path");
 
 const express = require("express");
 const app = express();
@@ -42,6 +43,7 @@ app.use(
 );
 
 // setting express middlewares
+app.use(express.static(path.join(__dirname, "public/images")));
 app.use(express.json());
 
 // setting third-party middlewares

@@ -4,6 +4,7 @@
 
 .rightbarWrapper {
   padding: 20px 20px 0 0;
+  position: relative;
 }
 
 .birthdayContainer {
@@ -71,14 +72,13 @@
 .rightbarFollowings {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
 }
 
 .rightbarFollowing {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 10px;
+  margin: 10px;
 }
 
 .rightbarFollowingImg {
@@ -87,4 +87,35 @@
   border-radius: 5px;
   object-fit: cover;
   cursor: pointer;
+}
+
+.rightbarUsername {
+  display: block;
+  margin-top: 10px;
+}
+
+.rightbarFollowButton {
+  border: none;
+  outline: none;
+  background-color: #1872f2;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.rightbarInfoLoading {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.followLoading {
+  color: #fff !important;
 }

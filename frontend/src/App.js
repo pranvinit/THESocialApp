@@ -1,8 +1,8 @@
 // pages imports
 import Home from "./pages/home/Home";
 import Profile from "./pages/profile/Profile";
-import Login from "./components/login/Login";
-import Register from "./components/register/register";
+import Login from "./pages/login/Login";
+import Register from "./pages/register/Register";
 
 import { useEffect, useContext } from "react";
 
@@ -27,13 +27,12 @@ function App() {
     getCurrentUser(dispatch);
   }, []);
 
-  console.log(user);
   return (
     <Router>
       <Routes>
         <Route path="/" element={user ? <Home /> : <Navigate to="/login" />} />
         <Route
-          path="/profile"
+          path="/profile/:id"
           element={user ? <Profile /> : <Navigate to="/login" />}
         />
         <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
