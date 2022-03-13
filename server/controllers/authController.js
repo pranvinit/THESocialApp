@@ -28,32 +28,37 @@ const register = async (req, res) => {
 
     res.status(StatusCodes.CREATED).json({ user: tokenUser });
   } catch (err) {
+    console.log(err);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(err);
   }
 };
 
 const login = async (req, res) => {
   const { email, password } = req.body;
-  const user = await User.findOne({ email });
-  if (!user) {
-    return res
-      .status(StatusCodes.UNAUTHORIZED)
-      .json({ msg: "please provide correct email and password" });
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ msg: "please provide correct email and password" });
+    }
+    const isPasswordCorrect = await user.comparePassword(password);
+    if (!isPasswordCorrect) {
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ msg: "please provide correct email and password" });
+    }
+    if (!user.isVerified) {
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ msg: "please verify your email to login" });
+    }
+    const tokenUser = createTokenUser(user);
+    attackCookieToResponse({ user: tokenUser, res });
+    res.status(StatusCodes.OK).json({ user: tokenUser });
+  } catch (err) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(err);
   }
-  const isPasswordCorrect = await user.comparePassword(password);
-  if (!isPasswordCorrect) {
-    return res
-      .status(StatusCodes.UNAUTHORIZED)
-      .json({ msg: "please provide correct email and password" });
-  }
-  if (!user.isVerified) {
-    return res
-      .status(StatusCodes.UNAUTHORIZED)
-      .json({ msg: "user is not authorized" });
-  }
-  const tokenUser = createTokenUser(user);
-  attackCookieToResponse({ user: tokenUser, res });
-  res.status(StatusCodes.OK).json({ user: tokenUser });
 };
 
 const logout = async (req, res) => {

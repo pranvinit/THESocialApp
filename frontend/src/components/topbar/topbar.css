@@ -1,3 +1,8 @@
+/* utility classes */
+.no-dec {
+  text-decoration: none;
+}
+
 .topbarContainer {
   height: 65px;
   width: 100%;

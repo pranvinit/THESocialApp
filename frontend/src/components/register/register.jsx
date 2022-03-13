@@ -1,6 +1,39 @@
 import "./register.css";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
+import { useRef } from "react";
+
+// auth services imports
+import { registerRequest } from "../../context/AuthService";
 
 export default function Register() {
+  const navigate = useNavigate();
+
+  const username = useRef();
+  const email = useRef();
+  const password = useRef();
+  const confPassword = useRef();
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    if (password.current.value !== confPassword.current.value) {
+      console.log(confPassword.current.value);
+      confPassword.current.setCustomValidity("Passwords don't match");
+      return;
+    }
+    try {
+      await registerRequest({
+        username: username.current.value,
+        email: email.current.value,
+        password: password.current.value,
+      });
+      navigate("/login");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="register">
       <div className="registerWrapper">
@@ -11,30 +44,39 @@ export default function Register() {
           </span>
         </div>
         <div className="registerRight">
-          <div className="registerBox">
+          <form className="registerBox" onSubmit={handleRegister}>
+            <input
+              type="text"
+              className="registerInput"
+              placeholder="Username"
+              ref={username}
+            />
             <input
               type="email"
-              name="email"
               className="registerInput"
               placeholder="Email"
+              ref={email}
             />
             <input
               type="password"
-              name="password"
               className="registerInput"
               placeholder="Password"
+              ref={password}
             />
             <input
               type="password"
-              name="confPassword"
               className="registerInput"
               placeholder="Confirm Password"
+              ref={confPassword}
             />
             <button className="registerButton">Register</button>
-            <button className="registerLoginButton">
+            <button
+              className="registerLoginButton"
+              onClick={() => navigate("/login")}
+            >
               Log In to your account
             </button>
-          </div>
+          </form>
         </div>
       </div>
     </div>

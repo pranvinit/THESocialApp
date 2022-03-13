@@ -3,6 +3,7 @@ const router = express.Router();
 
 // controller imports
 const {
+  showCurrentUser,
   getSingleUser,
   getAllUsers,
   updateUserPassword,
@@ -21,6 +22,8 @@ const {
 router
   .route("/")
   .get([authenticateUser, authorizePermission("admin")], getAllUsers);
+
+router.route("/showUser").get(authenticateUser, showCurrentUser);
 
 router.route("/update-password").post(authenticateUser, updateUserPassword);
 

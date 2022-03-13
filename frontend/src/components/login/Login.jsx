@@ -1,6 +1,28 @@
 import "./login.css";
+import { useRef, useContext } from "react";
+
+// context imports
+import { AuthContext } from "../../context/AuthContext";
+
+// auth services imports
+import { loginRequest } from "../../context/AuthService";
 
 export default function Login() {
+  const email = useRef();
+  const password = useRef();
+
+  const { user, isFetching, error, dispatch } = useContext(AuthContext);
+
+  const handleSubmit = () => {
+    if (email.current.value && password.current.value) {
+      loginRequest({
+        email: email.current.value,
+        password: password.current.value,
+        dispatch,
+      });
+    }
+  };
+
   return (
     <div className="login">
       <div className="loginWrapper">
@@ -17,14 +39,18 @@ export default function Login() {
               name="email"
               className="loginInput"
               placeholder="Email"
+              ref={email}
             />
             <input
               type="password"
               name="password"
               className="loginInput"
               placeholder="Password"
+              ref={password}
             />
-            <button className="loginButton">Log In</button>
+            <button className="loginButton" onClick={handleSubmit}>
+              Log In
+            </button>
             <span className="forgotPassword">Forgot Password?</span>
             <button className="loginRegisterButton">
               Create a New Account

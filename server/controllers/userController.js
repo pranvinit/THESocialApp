@@ -2,6 +2,11 @@ const User = require("../models/UserModel");
 const { StatusCodes } = require("http-status-codes");
 const { createTokenUser, attackCookieToResponse } = require("../utils");
 
+const showCurrentUser = async (req, res) => {
+  const user = req.user;
+  res.status(StatusCodes.OK).json({ user });
+};
+
 const getSingleUser = async (req, res) => {
   const { id: userId } = req.params;
   try {
@@ -151,4 +156,5 @@ module.exports = {
   updateUserPassword,
   followUser,
   unfollowUser,
+  showCurrentUser,
 };

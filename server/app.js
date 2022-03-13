@@ -5,6 +5,7 @@ const app = express();
 
 // middleware imports
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 const helmet = require("helmet");
 const xss = require("xss-clean");
 const mongoSanitize = require("express-mongo-sanitize");
@@ -36,6 +37,7 @@ app.use(express.json());
 
 // setting third-party middlewares
 app.use(cookieParser(process.env.SIGNED_COOKIE_SECRET));
+app.use(cors());
 app.use(helmet());
 app.use(xss());
 app.use(mongoSanitize());
