@@ -11,8 +11,6 @@ const {
   timelinePosts,
 } = require("../controllers/postController");
 
-const uploadPostImage = require("../controllers/uploadController");
-
 // middleware imports
 const {
   authenticateUser,
@@ -20,8 +18,6 @@ const {
 } = require("../middleware/authentication");
 
 router.route("/").post(authenticateUser, createPost);
-
-router.route("/uploads").post(uploadPostImage);
 
 router.route("/timeline").get(authenticateUser, timelinePosts);
 router.route("/:id/like").put(authenticateUser, likePost);

@@ -25,6 +25,7 @@ const notFound = require("./middleware/not-found");
 const authRouter = require("./routes/authRoutes");
 const userRouter = require("./routes/userRoutes");
 const postRouter = require("./routes/postRoutes");
+const uploadRouter = require("./routes/uploadRoute");
 // const postRouter = require('./routes/postRoutes')
 
 // db imports
@@ -61,6 +62,7 @@ app.get("/", (req, res) => {
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/posts", postRouter);
+app.use("/api/v1/uploads", uploadRouter);
 
 // setting error middlewares
 app.use(notFound);

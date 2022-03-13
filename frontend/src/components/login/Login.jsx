@@ -1,5 +1,8 @@
 import "./login.css";
-import { useRef, useContext } from "react";
+import { useRef, useContext, useState } from "react";
+import { CircularProgress } from "@mui/material";
+
+import { useNavigate } from "react-router-dom";
 
 // context imports
 import { AuthContext } from "../../context/AuthContext";
@@ -8,10 +11,12 @@ import { AuthContext } from "../../context/AuthContext";
 import { loginRequest } from "../../context/AuthService";
 
 export default function Login() {
+  const navigate = useNavigate();
+
   const email = useRef();
   const password = useRef();
 
-  const { user, isFetching, error, dispatch } = useContext(AuthContext);
+  const { isFetching, dispatch } = useContext(AuthContext);
 
   const handleSubmit = () => {
     if (email.current.value && password.current.value) {
@@ -49,12 +54,19 @@ export default function Login() {
               ref={password}
             />
             <button className="loginButton" onClick={handleSubmit}>
-              Log In
+              {!isFetching ? (
+                "Log In"
+              ) : (
+                <CircularProgress size={24} className="loadingIndicator" />
+              )}
             </button>
             <span className="forgotPassword">Forgot Password?</span>
-            <button className="loginRegisterButton">
+            <span
+              className="loginRegisterText"
+              onClick={() => navigate("/register")}
+            >
               Create a New Account
-            </button>
+            </span>
           </div>
         </div>
       </div>
