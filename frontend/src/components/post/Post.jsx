@@ -1,21 +1,44 @@
 import "./post.css";
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
+import axios from "axios";
+
+// timeago imports
+import { format } from "timeago.js";
+
+// context imports
+import { AuthContext } from "../../context/AuthContext";
 
 // mui-icons imports
 import { MoreVert } from "@mui/icons-material";
 
-// dummy data imports
-import { Users } from "../../dummyData";
-
 export default function Post({ post }) {
-  const postUser = Users.find((u) => u.id === post.userId);
+  const { user } = useContext(AuthContext);
+  const [postUser, setPostUser] = useState({});
 
-  const [likes, setLikes] = useState(post.likes);
-  const [isLiked, setIsLiked] = useState(false);
+  useEffect(() => {
+    if (!post.user) return;
+    const getPostUser = async () => {
+      try {
+        const user = await axios.get(`/users/${post.user}`);
+        setPostUser(user.data.user);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getPostUser();
+  }, [post.userId]);
 
-  const handleLike = () => {
-    setLikes(!isLiked ? likes + 1 : likes - 1);
-    setIsLiked(!isLiked);
+  const [likes, setLikes] = useState(post.likes?.length);
+  const [isLiked, setIsLiked] = useState(post.likes.includes(user._id));
+
+  const handleLike = async () => {
+    try {
+      await axios.put(`/posts/${post._id}/like`);
+      setLikes(!isLiked ? likes + 1 : likes - 1);
+      setIsLiked(!isLiked);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -24,12 +47,16 @@ export default function Post({ post }) {
         <div className="postTop">
           <div className="postTopLeft">
             <img
-              src={`/assets/${postUser.profilePicture}`}
+              src={
+                postUser.profilePicture
+                  ? `/assets/${postUser.profilePicture}`
+                  : "/assets/person/noAvatar.png"
+              }
               alt="profile"
               className="postProfileImg"
             />
             <span className="postUsername">{postUser.username}</span>
-            <span className="postDate">{post.date}</span>
+            <span className="postDate">{format(post.createdAt)}</span>
           </div>
           <div className="postTopRight">
             <MoreVert className="moreVert" />
@@ -37,7 +64,9 @@ export default function Post({ post }) {
         </div>
         <div className="postCenter">
           <span className="postText">{post.description}</span>
-          <img src={`/assets/${post.photo}`} alt="post" className="postImg" />
+          {post.image && (
+            <img src={`/assets/${post.photo}`} alt="post" className="postImg" />
+          )}
         </div>
         <div className="postBottom">
           <div className="postBottomLeft">

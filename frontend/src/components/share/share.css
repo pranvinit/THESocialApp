@@ -1,3 +1,8 @@
+/* utility class */
+.hidden {
+  display: none;
+}
+
 .share {
   widows: 100%;
   border-radius: 10px;

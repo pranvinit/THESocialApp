@@ -111,13 +111,14 @@ const timelinePosts = async (req, res) => {
       .status(StatusCodes.NOT_FOUND)
       .json({ msg: `No user with id ${userId}` });
   }
-  const userPosts = await Post.find({ user: userId });
+  const userPosts = await Post.find({ user: userId }).sort("-updatedAt");
   const friendsPosts = await Promise.all(
     user.followers.map(async (f) => {
-      return await Post.find({ user: f });
+      return await Post.find({ user: f }).sort("-updatedAt");
     })
   );
-  const timeline = userPosts.concat(friendsPosts);
+  const timeline = userPosts.concat(...friendsPosts);
+  console.log(timeline);
   res.status(StatusCodes.OK).json({ posts: timeline, nbHits: timeline.length });
 };
 

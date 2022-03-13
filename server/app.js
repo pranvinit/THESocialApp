@@ -4,6 +4,14 @@ const express = require("express");
 const app = express();
 
 // middleware imports
+const fileUpload = require("express-fileupload");
+const cloudinary = require("cloudinary").v2;
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET,
+});
+
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const helmet = require("helmet");
@@ -36,6 +44,7 @@ app.use(
 app.use(express.json());
 
 // setting third-party middlewares
+app.use(fileUpload());
 app.use(cookieParser(process.env.SIGNED_COOKIE_SECRET));
 app.use(cors());
 app.use(helmet());

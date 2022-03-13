@@ -1,23 +1,46 @@
 import "./share.css";
 import autosize from "autosize";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
+import axios from "axios";
 
 // mui-icons imports
 import { PermMedia, Label, Room, EmojiEmotions } from "@mui/icons-material";
 
+// context imports
+import { AuthContext } from "../../context/AuthContext";
+
 export default function Share() {
+  const { user } = useContext(AuthContext);
   const shareTextArea = useRef(null);
+  const [file, setFile] = useState(null);
 
   useEffect(() => {
     autosize(shareTextArea.current);
   }, []);
+
+  const handleSubmit = async () => {
+    const newPost = {
+      user: user._id,
+      description: shareTextArea.current.value,
+    };
+
+    try {
+      await axios.post(`/posts`, newPost);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div className="share">
       <div className="shareWrapper">
         <div className="shareTop">
           <img
-            src="/assets/person/1.jpeg"
+            src={
+              user.profilePicture
+                ? user.profilePicture
+                : "/assets/person/noAvatar.png"
+            }
             alt="share"
             className="shareProfileImg"
           />
@@ -33,10 +56,17 @@ export default function Share() {
         <hr className="shareHr" />
         <div className="shareBottom">
           <div className="shareOptions">
-            <div className="shareOption">
+            <label htmlFor="fileInput" className="shareOption">
               <PermMedia className="shareIcon" htmlColor="tomato" />
+              <input
+                type="file"
+                id="fileInput"
+                className="hidden"
+                accept="image/*"
+                onChange={(e) => setFile(e.target.files[0])}
+              />
               <span className="shareLabel">Image/Video</span>
-            </div>
+            </label>
             <div className="shareOption">
               <Label className="shareIcon" htmlColor="blue" />
               <span className="shareLabel">Tag</span>
@@ -50,7 +80,9 @@ export default function Share() {
               <span className="shareLabel">Feelings</span>
             </div>
           </div>
-          <button className="shareButton">Share</button>
+          <button className="shareButton" onClick={handleSubmit}>
+            Share
+          </button>
         </div>
       </div>
     </div>
