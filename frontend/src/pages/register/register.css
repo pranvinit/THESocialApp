@@ -42,14 +42,40 @@
   justify-content: space-evenly;
 }
 
-.registerProfileLabel {
+.registerCoverLabel {
   display: flex;
   justify-content: center;
+  position: relative;
+  cursor: pointer;
+}
+
+.registerCoverImg {
+  width: 500px;
+  height: 125px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.registerProfileLabel {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  z-index: 999;
 }
 
 .registerProfileImg {
-  width: 100px;
-  height: 100px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.registerProfileImg {
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   border: 2px solid #1775ee;
   object-fit: cover;

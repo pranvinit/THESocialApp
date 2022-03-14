@@ -9,6 +9,7 @@ const {
   deletePost,
   likePost,
   timelinePosts,
+  getUsersPosts,
 } = require("../controllers/postController");
 
 // middleware imports
@@ -20,6 +21,7 @@ const {
 router.route("/").post(authenticateUser, createPost);
 
 router.route("/timeline").get(authenticateUser, timelinePosts);
+router.route("/profile/:id").get(authenticateUser, getUsersPosts);
 router.route("/:id/like").put(authenticateUser, likePost);
 
 router

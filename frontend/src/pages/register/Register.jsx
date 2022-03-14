@@ -20,13 +20,22 @@ export default function Register() {
   const city = useRef();
   const relationship = useRef();
 
-  const [file, setFile] = useState(null);
+  const [profileImgFile, setProfileImgFile] = useState(null);
+  const [coverImgFile, setCoverImgFile] = useState(null);
+
   const [profileImg, setProfileImg] = useState(null);
+  const [coverImg, setCoverImg] = useState(null);
+
   const [loading, setLoading] = useState(false);
 
-  const handleFileChange = ({ target }) => {
-    setFile(target.files[0]);
+  const handleProfileFileChange = ({ target }) => {
+    setProfileImgFile(target.files[0]);
     setProfileImg(URL.createObjectURL(target.files[0]));
+  };
+
+  const handleCoverFileChange = ({ target }) => {
+    setCoverImgFile(target.files[0]);
+    setCoverImg(URL.createObjectURL(target.files[0]));
   };
 
   const handleRegister = async (e) => {
@@ -48,11 +57,17 @@ export default function Register() {
       };
 
       // handling profile image upload
-      if (file) {
+      if (profileImgFile) {
         const data = new FormData();
-        data.append("image", file);
+        data.append("image", profileImgFile);
         const imgUrl = await axios.post("/uploads", data);
         body.profilePicture = imgUrl.data.image;
+      }
+      if (coverImgFile) {
+        const data = new FormData();
+        data.append("image", coverImgFile);
+        const imgUrl = await axios.post("/uploads", data);
+        body.coverPicture = imgUrl.data.image;
       }
 
       await registerRequest(body);
@@ -75,18 +90,31 @@ export default function Register() {
         </div>
         <div className="registerRight">
           <form className="registerBox" onSubmit={handleRegister}>
-            <label htmlFor="profileImg" className="registerProfileLabel">
+            <label htmlFor="coverImg" className="registerCoverLabel">
               <img
-                src={!profileImg ? "/assets/person/noAvatar.png" : profileImg}
-                alt="profile"
-                className="registerProfileImg"
+                src={!coverImg ? "/assets/person/noCover.png" : coverImg}
+                alt="cover"
+                className="registerCoverImg"
               />
               <input
                 type="file"
-                id="profileImg"
+                id="coverImg"
                 className="hidden"
-                onChange={handleFileChange}
+                onChange={handleCoverFileChange}
               />
+              <label htmlFor="profileImg" className="registerProfileLabel">
+                <img
+                  src={!profileImg ? "/assets/person/noAvatar.png" : profileImg}
+                  alt="profile"
+                  className="registerProfileImg"
+                />
+                <input
+                  type="file"
+                  id="profileImg"
+                  className="hidden"
+                  onChange={handleProfileFileChange}
+                />
+              </label>
             </label>
             <input
               type="text"

@@ -47,14 +47,18 @@ export default function Topbar() {
           </span>
         </div>
         <div className="topbarIcons">
-          <div className="topbarIcon">
-            <Person />
-            <span className="topbarIconsBadge">1</span>
-          </div>
-          <div className="topbarIcon">
-            <Chat />
-            <span className="topbarIconsBadge">2</span>
-          </div>
+          <Link to={`/profile/${user._id}`} className="no-dec-fff">
+            <div className="topbarIcon">
+              <Person />
+              <span className="topbarIconsBadge">1</span>
+            </div>
+          </Link>
+          <Link to="/messenger" className="no-dec-fff">
+            <div className="topbarIcon">
+              <Chat />
+              <span className="topbarIconsBadge">2</span>
+            </div>
+          </Link>
           <div className="topbarIcon">
             <Notifications />
             <span className="topbarIconsBadge">1</span>

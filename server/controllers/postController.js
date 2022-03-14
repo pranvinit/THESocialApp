@@ -18,6 +18,16 @@ const getSinglePost = async (req, res) => {
   }
 };
 
+const getUsersPosts = async (req, res) => {
+  const { id: userId } = req.params;
+  try {
+    const posts = await Post.find({ user: userId });
+    res.status(StatusCodes.OK).json({ posts, nbHits: posts.length });
+  } catch (err) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(err);
+  }
+};
+
 const createPost = async (req, res) => {
   const { _id: userId } = req.user;
   const data = req.body;
@@ -129,4 +139,5 @@ module.exports = {
   deletePost,
   likePost,
   timelinePosts,
+  getUsersPosts,
 };

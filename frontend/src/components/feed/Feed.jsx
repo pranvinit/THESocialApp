@@ -15,14 +15,16 @@ export default function Feed({ userId }) {
   useEffect(() => {
     const getTimelinePosts = async () => {
       try {
-        const posts = await axios.get("/posts/timeline");
+        const posts = userId
+          ? await axios.get(`/posts/profile/${userId}`)
+          : await axios.get("/posts/timeline");
         setPosts(posts.data.posts);
       } catch (err) {
         console.log(err);
       }
     };
     getTimelinePosts();
-  }, []);
+  }, [userId]);
 
   return (
     <div className="feed">
