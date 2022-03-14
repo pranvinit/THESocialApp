@@ -41,7 +41,6 @@ export default function Register() {
   const handleRegister = async (e) => {
     e.preventDefault();
     if (password.current.value !== confPassword.current.value) {
-      console.log(confPassword.current.value);
       confPassword.current.setCustomValidity("Passwords don't match");
       return;
     }

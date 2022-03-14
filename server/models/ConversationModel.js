@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const ConversationSchema = mongoose.Schema(
   {
-    member: {
+    members: {
       type: [mongoose.Types.ObjectId],
     },
   },

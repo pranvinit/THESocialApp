@@ -18,29 +18,49 @@ export default function Messenger() {
   const messageTextArea = useRef();
   const scrollRef = useRef();
   const socket = useRef();
+  const { user } = useContext(AuthContext);
 
   const [conversations, setConversations] = useState([]);
-
+  const [messages, setMessages] = useState([]);
   // clicking on conversations sets the current chat
   const [currentChat, setCurrentChat] = useState(null);
+  const [onlineUsers, setOnlineUsers] = useState([]);
+
+  const receiverId = currentChat?.members.find((m) => m !== user._id);
 
   // fetch all messages of current chat
-  const [messages, setMessages] = useState([]);
 
   // handling socket connection
+  useEffect(() => {
+    socket.current = io("ws://localhost:8000");
+  }, []);
 
   useEffect(() => {
-    socket.current = io("ws://localhost:3000");
-    socket.on("welcome", (data) => {
-      console.log(data);
+    socket.current.emit("addUser", user._id);
+    socket.current.on("getUsers", (users) => {
+      const onlineUsersId = users.map((u) => u.userId);
+      setOnlineUsers(onlineUsersId);
+    });
+  }, [user]);
+
+  const [arrivalMessage, setArrivalMessage] = useState(null);
+  useEffect(() => {
+    socket.current.on("getMessage", (data) => {
+      setArrivalMessage({
+        sender: data.sender,
+        text: data.text,
+        createdAt: Date.now(),
+      });
     });
   }, []);
 
   useEffect(() => {
-    socket?.on("welcome", (msg) => console.log(msg));
-  }, [socket]);
+    arrivalMessage &&
+      currentChat?.members.includes(arrivalMessage.sender) &&
+      setMessages((prev) => [...prev, arrivalMessage]);
+  }, [arrivalMessage, currentChat]);
 
-  const { user } = useContext(AuthContext);
+  // socket end
 
   useEffect(() => {
     const getConversations = async () => {
@@ -81,6 +101,14 @@ export default function Messenger() {
         sender: user._id,
         text: messageTextArea.current.value,
       };
+
+      // handling real-time logic
+      socket.current.emit("sendMessage", {
+        sender: user._id,
+        receiver: receiverId,
+        text: messageTextArea.current.value,
+      });
+
       const res = await axios.post("/messages", body);
       messageTextArea.current.value = "";
       setMessages((prev) => [...prev, res.data.message]);
@@ -150,9 +178,11 @@ export default function Messenger() {
         </div>
         <div className="chatOnline">
           <div className="chatOnlineWrapper">
-            <ChatOnline />
-            <ChatOnline />
-            <ChatOnline />
+            <ChatOnline
+              onlineUsers={onlineUsers}
+              userId={user._id}
+              setCurrentChat={setCurrentChat}
+            />
           </div>
         </div>
       </div>

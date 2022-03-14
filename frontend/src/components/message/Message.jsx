@@ -2,7 +2,6 @@ import "./message.css";
 import { format } from "timeago.js";
 
 export default function Message({ message, own, user }) {
-  console.log(user);
   return (
     <div className={own ? "message own" : "message"}>
       <div className="messageTop">

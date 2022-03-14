@@ -18,6 +18,7 @@ export default function Post({ post }) {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
   useEffect(() => {
+    if (!post.user) return;
     const getPostUser = async () => {
       try {
         const user = await axios.get(`/users/${post.user}`);
@@ -26,9 +27,8 @@ export default function Post({ post }) {
         console.log(err);
       }
     };
-    if (!post.user) return;
     getPostUser();
-  }, [post.userId]);
+  }, [post.user]);
 
   const [likes, setLikes] = useState(post.likes?.length);
   const [isLiked, setIsLiked] = useState(post.likes.includes(user._id));

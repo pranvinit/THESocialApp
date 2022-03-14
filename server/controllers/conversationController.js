@@ -24,8 +24,33 @@ const getConversation = async (req, res) => {
   try {
     const conversations = await Conversation.find({
       members: { $in: [userId] },
-    });
+    }).sort("-createdAt");
     res.status(200).json({ conversations, nbHits: conversations.length });
+  } catch (err) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(err);
+  }
+};
+
+// get existing coversation
+const getOrCreateCoversation = async (req, res) => {
+  const { _id: userId } = req.user;
+  const { id: friendId } = req.params;
+
+  try {
+    const conversation = await Conversation.findOne({
+      // all items should have below attributes
+      members: { $all: [userId, friendId] },
+    });
+
+    if (conversation) {
+      return res.status(StatusCodes.OK).json({ conversation });
+    }
+
+    const newConversation = await Conversation.create({
+      members: [userId, friendId],
+    });
+    console.log(newConversation);
+    return res.status(StatusCodes.OK).json({ conversation: newConversation });
   } catch (err) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(err);
   }
@@ -34,4 +59,5 @@ const getConversation = async (req, res) => {
 module.exports = {
   createConversation,
   getConversation,
+  getOrCreateCoversation,
 };
