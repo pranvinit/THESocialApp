@@ -27,14 +27,17 @@ const authRouter = require("./routes/authRoutes");
 const userRouter = require("./routes/userRoutes");
 const postRouter = require("./routes/postRoutes");
 const uploadRouter = require("./routes/uploadRoute");
+const conversationRouter = require("./routes/coversationRoutes");
+const messageRouter = require("./routes/messageRoutes");
 // const postRouter = require('./routes/postRoutes')
 
 // db imports
 const connectDB = require("./db/connect");
 
 // rate limiter config
-app.set("trust proxy", 1);
 // limits number of requests made by specific ips
+
+app.set("trust proxy", 1);
 app.use(
   rateLimiter({
     windowMs: 1000 * 60,
@@ -65,6 +68,8 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/posts", postRouter);
 app.use("/api/v1/uploads", uploadRouter);
+app.use("/api/v1/conversations", conversationRouter);
+app.use("/api/v1/messages", messageRouter);
 
 // setting error middlewares
 app.use(notFound);

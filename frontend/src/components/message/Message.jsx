@@ -1,18 +1,24 @@
 import "./message.css";
+import { format } from "timeago.js";
 
-export default function Message({ own }) {
+export default function Message({ message, own, user }) {
+  console.log(user);
   return (
     <div className={own ? "message own" : "message"}>
       <div className="messageTop">
         <img
-          src="/assets/person/noAvatar.png"
+          src={
+            own && user.profilePicture
+              ? user.profilePicture
+              : "/assets/person/noAvatar.png"
+          }
           alt="message"
           className="messageImg"
         />
-        <span className="messageText">Hello this is the message</span>
+        <span className="messageText">{message.text}</span>
       </div>
       <div className="messageBottom">
-        <span>1 hour ago</span>
+        <span>{format(message.createdAt)}</span>
       </div>
     </div>
   );

@@ -8,9 +8,6 @@ import { CircularProgress } from "@mui/material";
 // components imports
 import Online from "../online/Online";
 
-// dummy data imports
-import { Users } from "../../dummyData";
-
 // auth context imports
 import { AuthContext } from "../../context/AuthContext";
 
@@ -59,21 +56,21 @@ const HomeRightBar = () => {
 const ProfileRightBar = ({ user, loading }) => {
   const { user: currentUser } = useContext(AuthContext);
 
-  const [friends, setFriends] = useState([]);
+  const [followings, setFollowings] = useState([]);
+  const [followers, setFollowers] = useState([]);
   const [followLoading, setFollowLoading] = useState(false);
-
-  const followings = friends.map((f) => f._id);
 
   const [isFollowed, setIsFollowed] = useState(false);
 
   useEffect(() => {
-    setIsFollowed(followings.includes(user._id));
-  }, [user, friends, followings]);
+    setIsFollowed(followers.includes(currentUser._id));
+  }, [followers, followings, currentUser]);
 
-  const getFriends = async () => {
+  const getFriends = async (id) => {
     try {
-      const res = await axios.get("/users/friends");
-      setFriends(res.data.followings);
+      const res = await axios.get(`/users/${id}/friends`);
+      setFollowings(res.data.followings);
+      setFollowers(res.data.followers.map((f) => f._id));
     } catch (err) {
       console.log(err);
     }
@@ -89,16 +86,16 @@ const ProfileRightBar = ({ user, loading }) => {
       }
       setFollowLoading(false);
       setIsFollowed(!isFollowed);
-      getFriends();
     } catch (err) {
-      console.log(err);
       setFollowLoading(false);
     }
   };
 
   useEffect(() => {
-    getFriends();
-  }, []);
+    if (user._id) {
+      getFriends(user._id);
+    }
+  }, [user._id]);
 
   if (loading) {
     return (
@@ -153,7 +150,7 @@ const ProfileRightBar = ({ user, loading }) => {
           User friends
         </span>
         <div className="rightbarFollowings">
-          {friends.map((f) => (
+          {followings.map((f) => (
             <Link key={f._id} to={`/profile/${f._id}`} className="no-dec">
               <div className="rightbarFollowing">
                 <img

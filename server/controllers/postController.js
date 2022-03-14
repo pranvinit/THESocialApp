@@ -98,7 +98,6 @@ const likePost = async (req, res) => {
         .json({ msg: `No post with id ${postId}` });
     }
     const isLiked = post.likes.includes(userId);
-    console.log(isLiked);
     if (!isLiked) {
       await post.updateOne({ $push: { likes: userId } });
     } else {
@@ -128,7 +127,6 @@ const timelinePosts = async (req, res) => {
     })
   );
   const timeline = userPosts.concat(...friendsPosts);
-  console.log(timeline);
   res.status(StatusCodes.OK).json({ posts: timeline, nbHits: timeline.length });
 };
 

@@ -20,7 +20,7 @@ const { authenticateUser } = require("../middleware/authentication");
 router.route("/").get(authenticateUser, getAllUsers);
 
 router.route("/showUser").get(authenticateUser, showCurrentUser);
-router.route("/friends").get(authenticateUser, getUserFollowings);
+router.route("/:id/friends").get(authenticateUser, getUserFollowings);
 
 router.route("/update-password").post(authenticateUser, updateUserPassword);
 

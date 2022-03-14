@@ -1,4 +1,4 @@
-import { useReducer, createContext } from "react";
+import { useReducer, createContext, useEffect } from "react";
 import axios from "axios";
 
 // action creators import
@@ -14,7 +14,7 @@ import {
 import AuthReducer from "./AuthReducer";
 
 const INITIAL_STATE = {
-  user: localStorage.getItem("user") || null,
+  user: JSON.parse(localStorage.getItem("user")) || null,
   isFetching: false,
   error: null,
 };
@@ -40,7 +40,7 @@ export const AuthContextProvider = ({ children }) => {
     try {
       const res = await axios.post("/auth/login", { email, password });
       dispatch(LoginSuccess(res.data.user));
-      localStorage.setItem("user", res.data.user);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
     } catch (err) {
       dispatch(LoginError(err));
     }

@@ -120,6 +120,7 @@ const followUser = async (req, res) => {
     await user.updateOne({ $push: { followings: friend._id } });
     res.status(StatusCodes.OK).json({ msg: "user has been followed" });
   } catch (err) {
+    console.log(err);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(err);
   }
 };
@@ -144,24 +145,31 @@ const unfollowUser = async (req, res) => {
     await user.updateOne({ $pull: { followings: friend._id } });
     res.status(StatusCodes.OK).json({ msg: "user has been followed" });
   } catch (err) {
+    console.log(err);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(err);
   }
 };
 
 // get user followings
 const getUserFollowings = async (req, res) => {
-  const user = req.user;
+  const { id: userId } = req.params;
   try {
-    const currentUser = await User.findOne({ _id: user._id });
-    console.log(currentUser.username);
+    const currentUser = await User.findOne({ _id: userId });
     const followings = await Promise.all(
       currentUser.followings.map((f) => {
         return User.findOne({ _id: f }).select("-password");
       })
     );
-    console.log(followings);
 
-    res.status(StatusCodes.OK).json({ followings, hbHits: followings.length });
+    const followers = await Promise.all(
+      currentUser.followers.map((f) => {
+        return User.findOne({ _id: f }).select("_id");
+      })
+    );
+
+    res
+      .status(StatusCodes.OK)
+      .json({ followings, followers, hbHits: followings.length });
   } catch (err) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(err);
   }
