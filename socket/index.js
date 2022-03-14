@@ -19,8 +19,6 @@ const getUser = (userId) => {
   return user;
 };
 
-console.log(users);
-
 io.on("connection", (socket) => {
   // send and get message
   socket.on("sendMessage", ({ sender, receiver, text }) => {

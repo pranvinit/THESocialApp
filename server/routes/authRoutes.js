@@ -20,7 +20,7 @@ router.route("/logout").get(authenticateUser, logout);
 
 // auth MISC
 router.route("/verify-email").post(authenticateUser, verifyEmail);
-router.route("/forgot-password").post(authenticateUser, forgotPassword);
-router.route("/reset-password").post(authenticateUser, resetPassword);
+router.route("/forgot-password").post(forgotPassword);
+router.route("/reset-password").post(resetPassword);
 
 module.exports = router;

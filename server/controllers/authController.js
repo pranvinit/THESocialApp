@@ -114,6 +114,7 @@ const forgotPassword = async (req, res) => {
       email: user.email,
       token: passwordToken,
       origin: process.env.ORIGIN,
+      name: user.username,
     });
   }
   res.status(StatusCodes.OK).json({ msg: "check email to reset the password" });
@@ -126,6 +127,8 @@ const resetPassword = async (req, res) => {
       .status(StatusCodes.BAD_REQUEST)
       .json({ msg: "please provide all the values" });
   }
+
+  console.log(passwordToken, email, password);
   try {
     const user = await User.findOne({ email });
     if (user) {

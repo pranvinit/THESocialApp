@@ -1,0 +1,31 @@
+.verify {
+  height: 100vh;
+  background-color: #f0f2f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.verifyBox {
+  width: 40%;
+  height: 150px;
+  background-color: #fff;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.verifyText {
+  font-size: 1.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.verifyLink {
+  text-decoration: none;
+  font-size: 1.5rem;
+  color: #1775ee;
+}

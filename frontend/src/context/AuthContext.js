@@ -42,7 +42,7 @@ export const AuthContextProvider = ({ children }) => {
       dispatch(LoginSuccess(res.data.user));
       localStorage.setItem("user", JSON.stringify(res.data.user));
     } catch (err) {
-      dispatch(LoginError(err));
+      dispatch(LoginError(err.response.data));
     }
   };
 
@@ -56,6 +56,11 @@ export const AuthContextProvider = ({ children }) => {
     localStorage.removeItem("user");
   };
 
+  const forgotPasswordRequest = async (email) => {
+    localStorage.removeItem("user");
+    return axios.post("/auth/forgot-password", { email });
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -64,6 +69,7 @@ export const AuthContextProvider = ({ children }) => {
         loginRequest,
         registerRequest,
         logoutRequest,
+        forgotPasswordRequest,
       }}
     >
       {children}

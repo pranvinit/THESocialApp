@@ -20,6 +20,11 @@
   justify-content: center;
 }
 
+.registerLeft {
+  box-sizing: border-box;
+  padding-right: 50px;
+}
+
 .registerLogo {
   display: block;
   font-size: 50px;

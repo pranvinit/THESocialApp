@@ -7,6 +7,9 @@ import { useRef, useState, useContext } from "react";
 // auth context imports
 import { AuthContext } from "../../context/AuthContext";
 
+// components imports
+import Verify from "../../components/verify/Verify";
+
 export default function Register() {
   const navigate = useNavigate();
 
@@ -27,6 +30,9 @@ export default function Register() {
   const [coverImg, setCoverImg] = useState(null);
 
   const [loading, setLoading] = useState(false);
+
+  // handling verify email
+  const [registerUser, setRegisterUser] = useState(null);
 
   const handleProfileFileChange = ({ target }) => {
     setProfileImgFile(target.files[0]);
@@ -69,14 +75,25 @@ export default function Register() {
         body.coverPicture = imgUrl.data.image;
       }
 
-      await registerRequest(body);
+      const res = await registerRequest(body);
+      localStorage.removeItem("user");
+      setRegisterUser(res.data.user);
       setLoading(false);
-      navigate("/login");
     } catch (err) {
       console.log(err);
       setLoading(false);
     }
   };
+
+  if (registerUser) {
+    return (
+      <Verify
+        title="Verify your email to log in"
+        hint="Hint: click on the link provided in email to verify your account"
+        linkText="verify Email"
+      />
+    );
+  }
 
   return (
     <div className="register">
