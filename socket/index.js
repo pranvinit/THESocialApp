@@ -7,7 +7,5 @@ const io = require("socket.io")(8000, {
 io.on("connection", (socket) => {
   console.log("a user has connected");
 
-  socket.on("disconnect", () => {
-    console.log("a user has disconnected");
-  });
+  io.emit("welcome", "a user connected");
 });

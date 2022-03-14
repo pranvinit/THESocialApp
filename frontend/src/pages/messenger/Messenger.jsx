@@ -3,6 +3,8 @@ import { useEffect, useState, useRef, useContext } from "react";
 import autosize from "autosize";
 import axios from "axios";
 
+import { io } from "socket.io-client";
+
 // components imports
 import Topbar from "../../components/topbar/Topbar";
 import Conversation from "../../components/conversation/Conversation";
@@ -15,6 +17,7 @@ import { AuthContext } from "../../context/AuthContext";
 export default function Messenger() {
   const messageTextArea = useRef();
   const scrollRef = useRef();
+  const socket = useRef();
 
   const [conversations, setConversations] = useState([]);
 
@@ -23,6 +26,19 @@ export default function Messenger() {
 
   // fetch all messages of current chat
   const [messages, setMessages] = useState([]);
+
+  // handling socket connection
+
+  useEffect(() => {
+    socket.current = io("ws://localhost:3000");
+    socket.on("welcome", (data) => {
+      console.log(data);
+    });
+  }, []);
+
+  useEffect(() => {
+    socket?.on("welcome", (msg) => console.log(msg));
+  }, [socket]);
 
   const { user } = useContext(AuthContext);
 
