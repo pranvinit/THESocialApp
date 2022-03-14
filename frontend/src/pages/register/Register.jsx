@@ -3,13 +3,14 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 
-import { useRef, useState } from "react";
-
-// auth services imports
-import { registerRequest } from "../../context/AuthService";
+import { useRef, useState, useContext } from "react";
+// auth context imports
+import { AuthContext } from "../../context/AuthContext";
 
 export default function Register() {
   const navigate = useNavigate();
+
+  const { registerRequest } = useContext(AuthContext);
 
   const username = useRef();
   const email = useRef();

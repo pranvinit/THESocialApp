@@ -1,5 +1,6 @@
 import "./topbar.css";
 import { useContext } from "react";
+
 // mui-icons imports
 import { Chat, Notifications, Person, Search } from "@mui/icons-material";
 
@@ -10,7 +11,16 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 
 export default function Topbar() {
-  const { user } = useContext(AuthContext);
+  const { user, logoutRequest } = useContext(AuthContext);
+
+  const handleLogout = async () => {
+    try {
+      logoutRequest();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="topbarContainer">
       <div className="topbarLeft">
@@ -29,8 +39,12 @@ export default function Topbar() {
       </div>
       <div className="topbarRight">
         <div className="topbarLinks">
-          <span className="topbarLink">Hompage</span>
-          <span className="topbarLink">Timeline</span>
+          <Link to="/" className="no-dec-fff">
+            <span className="topbarLink">Homepage</span>
+          </Link>
+          <span onClick={handleLogout} className="topbarLink">
+            Logout
+          </span>
         </div>
         <div className="topbarIcons">
           <div className="topbarIcon">

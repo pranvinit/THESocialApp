@@ -9,9 +9,6 @@ import { useEffect, useContext } from "react";
 // context imports
 import { AuthContext } from "./context/AuthContext";
 
-// auth services imports
-import { getCurrentUser } from "./context/AuthService";
-
 // react-router imports
 import {
   BrowserRouter as Router,
@@ -21,10 +18,10 @@ import {
 } from "react-router-dom";
 
 function App() {
-  const { user, dispatch } = useContext(AuthContext);
+  const { user, authorizeUser } = useContext(AuthContext);
 
   useEffect(() => {
-    getCurrentUser(dispatch);
+    authorizeUser();
   }, []);
 
   return (

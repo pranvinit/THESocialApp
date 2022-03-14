@@ -7,23 +7,19 @@ import { useNavigate } from "react-router-dom";
 // context imports
 import { AuthContext } from "../../context/AuthContext";
 
-// auth services imports
-import { loginRequest } from "../../context/AuthService";
-
 export default function Login() {
   const navigate = useNavigate();
 
   const email = useRef();
   const password = useRef();
 
-  const { isFetching, dispatch } = useContext(AuthContext);
+  const { isFetching, loginRequest } = useContext(AuthContext);
 
   const handleSubmit = () => {
     if (email.current.value && password.current.value) {
       loginRequest({
         email: email.current.value,
         password: password.current.value,
-        dispatch,
       });
     }
   };

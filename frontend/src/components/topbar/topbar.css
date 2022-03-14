@@ -4,6 +4,11 @@
   text-decoration: none;
 }
 
+.no-dec-fff {
+  color: #fff;
+  text-decoration: none;
+}
+
 .topbarContainer {
   height: 65px;
   width: 100%;

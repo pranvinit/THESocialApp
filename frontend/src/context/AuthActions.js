@@ -1,14 +1,6 @@
-export const AuthorizationStart = (userCredentials) => ({
-  type: "AUTHORIZATION_START",
-  payload: userCredentials,
-});
-export const AuthorizationSuccess = (user) => ({
-  type: "AUTHORIZATION_SUCCESS",
+export const AuthorizeUser = (user) => ({
+  type: "AUTHORIZE_USER",
   payload: user,
-});
-export const AuthorizationError = (err) => ({
-  type: "AUTHORIZATION_ERROR",
-  payload: err,
 });
 
 export const LoginStart = (userCredentials) => ({
@@ -22,4 +14,8 @@ export const LoginSuccess = (user) => ({
 export const LoginError = (err) => ({
   type: "LOGIN_ERROR",
   payload: err,
+});
+
+export const Logout = () => ({
+  type: "LOGOUT",
 });
