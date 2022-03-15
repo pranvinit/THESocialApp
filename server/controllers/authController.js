@@ -1,5 +1,6 @@
 const User = require("../models/UserModel");
 const crypto = require("crypto");
+const bcrypt = require("bcryptjs");
 const { StatusCodes } = require("http-status-codes");
 
 // utils imports
@@ -77,7 +78,7 @@ const verifyEmail = async (req, res) => {
     if (!user) {
       return res
         .status(StatusCodes.UNAUTHORIZED)
-        .json({ msg: "please provide correct email and password" });
+        .json({ msg: "invalid email or token" });
     }
     if (user.verificationToken !== verificationToken) {
       return res
@@ -132,20 +133,21 @@ const resetPassword = async (req, res) => {
   try {
     const user = await User.findOne({ email });
     if (user) {
-      if (user) {
-        const currentDate = new Date();
-        if (
-          user.passwordToken === passwordToken &&
-          user.passwordExpirationDate > currentDate
-        ) {
-          await user.updateOne({
-            password,
-            passwordToken: "",
-            passwordExpirationDate: null,
-          });
-        }
+      const currentDate = new Date();
+      if (
+        user.passwordToken === passwordToken &&
+        user.passwordExpirationDate > currentDate
+      ) {
+        const salt = await bcrypt.genSalt();
+        const hashedPassword = await bcrypt.hash(password, salt);
+        await user.updateOne({
+          password: hashedPassword,
+          passwordToken: "",
+          passwordExpirationDate: null,
+        });
       }
     }
+
     res
       .status(StatusCodes.OK)
       .json({ msg: "password was changed successfully" });

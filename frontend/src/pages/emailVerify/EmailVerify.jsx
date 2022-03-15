@@ -43,8 +43,8 @@ export default function EmailVerify() {
     <div className="emailVerify">
       <div className="emailVerifyBox">
         <span className="emailVerifyText">Email was successfully verified</span>
-        <Link className="no-dec" to="/login">
-          <button className="verifyLoginButton">Login</button>
+        <Link className="no-dec" to="/">
+          <button className="verifyLoginButton">Go To Home</button>
         </Link>
       </div>
     </div>

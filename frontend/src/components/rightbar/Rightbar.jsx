@@ -43,7 +43,7 @@ const HomeRightBar = () => {
       <div className="rightbarAdsContainer">
         <img src="/assets/ad.png" alt="ad" className="rightbarAd" />
       </div>
-      <span className="rightbarTitle">Online Friends</span>
+      <span className="rightbarTitle">Online Users</span>
       <ul className="onlineFriendList">
         {users.map((u) => (
           <Online key={u._id} user={u} />
@@ -64,17 +64,7 @@ const ProfileRightBar = ({ user, loading }) => {
 
   useEffect(() => {
     setIsFollowed(followers.includes(currentUser._id));
-  }, [followers, followings, currentUser]);
-
-  const getFriends = async (id) => {
-    try {
-      const res = await axios.get(`/users/${id}/friends`);
-      setFollowings(res.data.followings);
-      setFollowers(res.data.followers.map((f) => f._id));
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  }, [followers, currentUser]);
 
   const handleFollow = async () => {
     setFollowLoading(true);
@@ -92,10 +82,19 @@ const ProfileRightBar = ({ user, loading }) => {
   };
 
   useEffect(() => {
-    if (user._id) {
-      getFriends(user._id);
-    }
-  }, [user._id]);
+    if (!user._id || loading) return;
+    const getFriends = async () => {
+      try {
+        const res = await axios.get(`/users/${user._id}/friends`);
+        setFollowings(res.data.followings);
+        console.log(res.data);
+        setFollowers(res.data.followers.map((f) => f._id));
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getFriends();
+  }, [user, loading]);
 
   if (loading) {
     return (

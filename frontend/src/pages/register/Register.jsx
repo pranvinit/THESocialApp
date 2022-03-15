@@ -90,7 +90,7 @@ export default function Register() {
       <Verify
         title="Verify your email to log in"
         hint="Hint: click on the link provided in email to verify your account"
-        linkText="verify Email"
+        linkText="Verify Email"
       />
     );
   }
@@ -164,7 +164,7 @@ export default function Register() {
               placeholder="Relationship"
               ref={relationship}
             />
-            <datalist id="relationship" ref={relationship}>
+            <datalist id="relationship">
               <option value="1">Single</option>
               <option value="2">Married</option>
             </datalist>

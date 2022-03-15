@@ -6,6 +6,7 @@ import Register from "./pages/register/Register";
 import Messenger from "./pages/messenger/Messenger";
 import EmailVerify from "./pages/emailVerify/EmailVerify";
 import ResetPassword from "./pages/resetPassword/ResetPassword";
+import Notfound from "./pages/notfound/Notfound";
 
 import { useEffect, useContext } from "react";
 
@@ -46,6 +47,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/auth/verify-email" element={<EmailVerify />} />
         <Route path="/auth/reset-password" element={<ResetPassword />} />
+        <Route path="*" element={<Notfound />} />
       </Routes>
     </Router>
   );

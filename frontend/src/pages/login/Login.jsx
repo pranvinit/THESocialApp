@@ -87,6 +87,12 @@ export default function Login() {
                   <CircularProgress size={24} className="loadingIndicator" />
                 )}
               </button>
+              <span
+                className="forgotBackText"
+                onClick={() => setForgotPassword(false)}
+              >
+                Back
+              </span>
             </div>
           ) : (
             <div className="loginBox">

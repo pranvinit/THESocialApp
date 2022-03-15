@@ -8,7 +8,7 @@ export default function ChatOnline({ onlineUsers, userId, setCurrentChat }) {
 
   const getFriends = async (id) => {
     try {
-      const res = await axios.get(`/users/${userId}/friends`);
+      const res = await axios.get(`/users/${id}/friends`);
       setFriends(res.data.followings);
     } catch (err) {
       console.log(err);
@@ -16,7 +16,7 @@ export default function ChatOnline({ onlineUsers, userId, setCurrentChat }) {
   };
 
   useEffect(() => {
-    getFriends();
+    getFriends(userId);
   }, [userId]);
 
   useEffect(() => {

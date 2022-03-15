@@ -85,7 +85,8 @@
   cursor: pointer;
 }
 
-.loginRegisterText {
+.loginRegisterText,
+.forgotBackText {
   font-size: 18px;
   text-align: center;
   cursor: pointer;
@@ -94,7 +95,7 @@
 }
 
 .forgotPasswordBox {
-  height: 200px;
+  height: 250px;
 }
 
 .forgotPasswordText {

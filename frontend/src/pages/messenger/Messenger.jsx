@@ -19,6 +19,7 @@ export default function Messenger() {
   const scrollRef = useRef();
   const socket = useRef();
   const { user } = useContext(AuthContext);
+  const ting = new Audio("/assets/tune.mp3");
 
   const [conversations, setConversations] = useState([]);
   const [messages, setMessages] = useState([]);
@@ -108,6 +109,7 @@ export default function Messenger() {
         receiver: receiverId,
         text: messageTextArea.current.value,
       });
+      ting.play();
 
       const res = await axios.post("/messages", body);
       messageTextArea.current.value = "";
